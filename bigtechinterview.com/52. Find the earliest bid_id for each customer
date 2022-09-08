@@ -54,7 +54,7 @@ Output
 
 Solution:
 
-SELECT b.customer_id, b.order_datetime, b.bid_id AS first_bid
+SELECT b.customer_id, b.order_datetime::date, b.bid_id AS first_bid
 FROM (SELECT customer_id, 
       		 order_datetime,
       		 bid_id,
