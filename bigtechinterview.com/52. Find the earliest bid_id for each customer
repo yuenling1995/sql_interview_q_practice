@@ -1,0 +1,67 @@
+Level: HARD
+
+
+SQL Schema
+
+Table: bids
++--------------+-----------+
+| Column Name  | Type      |
++--------------+-----------+    
+|bid_id        |var        |  
+|customer_id   |int        |
+|order_datetime|TIMESTAMP  |
+|item_id       |var        |
+|order_quantity|int        |
++--------------+-----------+
+
+Question: Write a query to get the earliest bid id for each customer for each date that placed a bid. Please return customer_id in ASC order.
+
+
+Example
+
+Table: bids
++------+-----------+--------------------+-------+--------------+
+|bid_id|customer_id| order_datetime     |item_id|order_quantity|
++------+-----------+--------------------+-------+--------------+
+|A-001 |32483      |2021-12-15 09:15:22 |B000   |3             |
+|A-002 |21456      |2022-01-10 09:28:35 |B001   |1             |
+|A-003 |21456      |2022-01-09 09:28:35 |B005   |1             |
+|A-004 |42491      |2022-01-16 02:52:07 |B008   |2             |
+|A-005 |42491      |2022-01-18 02:52:07 |B008   |2             |
+|A-006 |42491      |2022-01-18 02:52:07 |B008   |5             |
+|A-007 |21456      |2022-01-17 09:28:35 |B000   |1             |
+|A-008 |21456      |2022-01-17 10:28:35 |B008   |3             |
+|A-009 |21456      |2022-01-19 10:28:35 |B000   |2             |
++------+-----------+--------------------+-------+--------------+
+
+
+Output
+
++-----------+------------------------+---------+
+|customer_id|order_datetime          |first_bid|
++-----------+------------------------+---------+
+|21456      |2022-01-09T00:00:00.000Z|A-003    |
+|21456      |2022-01-10T00:00:00.000Z|A-002    |
+|21456      |2022-01-17T00:00:00.000Z|A-007    |
+|21456      |2022-01-19T00:00:00.000Z|A-009    |
+|32483      |2021-12-15T00:00:00.000Z|A-001    |
+|42491      |2022-01-16T00:00:00.000Z|A-004    |
+|42491      |2022-01-18T00:00:00.000Z|A-006    | 
+|42491      |2022-01-18T00:00:00.000Z|A-005    |
++-----------+------------------------+---------+
+
+
+
+Solution:
+
+SELECT b.customer_id, b.order_datetime, b.bid_id AS first_bid
+FROM (SELECT customer_id, 
+      		 order_datetime,
+      		 bid_id,
+      		 RANK() OVER (PARTITION BY customer_id, DATE(order_datetime)
+                    ORDER BY order_datetime) AS rank
+      FROM bids) b
+WHERE b.rank = 1
+ORDER BY b.customer_id ASC
+
+
