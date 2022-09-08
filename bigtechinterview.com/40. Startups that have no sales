@@ -1,0 +1,65 @@
+SQL Schema
+
+Table: orders  
++------------------+-----------+
+| Column Name      | Type      |
++------------------+-----------+    
+|order_id          |int        |  
+|item_id           |int        |  
+|quantity          |int        |
++------------------+-----------+
+Table: catalog  
++------------------+-----------+
+| Column Name      | Type      |
++------------------+-----------+    
+|item_id           |int        |  
+|product_id        |int        | 
+|product_group     |var        |
+|location          |var        |
++------------------+-----------+
+
+
+Question: Your portfolio manager wants to know which startups need attention and asks you to write a query to show the startups in the US that have no sales yet.
+
+Example
+
+Table: orders
++--------+-------+--------+
+|order_id|item_id|quantity|
++--------+-------+--------+
+|1       |46     |646     |
+|2       |63     |343     |
+|3       |23     |987     |
+|4       |24     |234     |
+|5       |53     |854     |
++--------+-------+--------+
+Table: catalog
++---------+------------+---------------+----------+
+| item_id | product_id | product_group | location |
++---------+------------+---------------+----------+
+|46       |543         |A              |US        |
+|63       |567         |B              |US        |
+|23       |566         |B              |MX        |
+|24       |563         |C              |CA        |
+|53       |568         |D              |US        |
+|64       |560         |E              |US        |
++---------+------------+---------------+----------+
+Output
+
++-------+----------+-------------+--------+
+|item_id|product_id|product_group|location|
++-------+----------+-------------+--------+
+|64     |560       |E            |US      |
++-------+----------+-------------+--------+
+
+
+Solution
+
+SELECT catalog.*
+FROM catalog 
+LEFT JOIN orders
+ON catalog.item_id = orders.item_id 
+WHERE catalog.location = 'US' 
+AND orders.quantity IS NULL
+
+
