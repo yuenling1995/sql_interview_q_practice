@@ -1,0 +1,85 @@
+Level: MEDIUM
+
+
+SQL Schema
+
+Table: bids
++--------------+-----------+
+| Column Name  | Type      |
++--------------+-----------+    
+|bid_id        |var        |  
+|customer_id   |int        |
+|order_datetime|timestamp  |
+|item_id       |var        |
+|order_quantity|int        |
++--------------+-----------+
+Table: items
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+|item_id       |var      |      
+|item_category |var      |    
++--------------+---------+
+
+
+Question: Write a query to find how many bids have been completed in each category for each day of the week. Please order the results by day of week in ASC order.
+
+
+Example
+
+Table: bids
++------+-----------+--------------------+-------+--------------+
+|bid_id|customer_id| order_datetime     |item_id|order_quantity|
++------+-----------+--------------------+-------+--------------+
+|A-001 |32483      |2021-12-15 09:15:22 |B000   |3             |
+|A-002 |21456      |2022-01-10 09:28:35 |B001   |1             |
+|A-003 |21456      |2022-01-09 09:28:35 |B005   |1             |
+|A-004 |42491      |2022-01-16 02:52:07 |B008   |2             |
+|A-005 |42491      |2022-01-18 02:52:07 |B008   |2             |
+|A-006 |42491      |2022-01-18 02:52:07 |B008   |5             |
+|A-007 |21456      |2022-01-17 09:28:35 |B000   |1             |
+|A-008 |21456      |2022-01-17 10:28:35 |B008   |3             |
+|A-009 |21456      |2022-01-19 10:28:35 |B000   |2             |
++------+-----------+--------------------+-------+--------------+
+Table: items
++---------+---------------+
+| item_id | item_category |
++---------+---------------+
+|B000     |Outdoors       |
+|B001     |Outdoors       |
+|B002     |Outdoors       |
+|B003     |Kitchen        |
+|B004     |Kitchen        |
+|B005     |Kitchen        |
+|B006     |Bedroom        |
+|B007     |Bedroom        |
+|B008     |Bedroom        |
++---------+---------------+
+Output
+
++-------------+-----------+-----+
+|item_category|day_of_week|count|
++-------------+-----------+-----+
+|Bedroom      |Monday     |1    |
+|Outdoors     |Monday     |2    |
+|Bedroom      |Sunday     |1    |
+|Kitchen      |Sunday     |1    |
+|Bedroom      |Tuesday    |2    |
+|Outdoors     |Wednesday  |2    |
++-------------+-----------+-----+
+
+
+Solution
+
+
+SELECT items.item_category,
+	   to_char(bids.order_datetime, 'Day') AS day_of_week,
+       COUNT(1) AS count
+FROM bids
+LEFT JOIN items
+ON bids.item_id = items.item_id
+GROUP BY items.item_category, to_char(bids.order_datetime, 'Day')
+ORDER BY day_of_week ASC
+
+
+
