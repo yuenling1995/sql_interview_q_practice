@@ -1,0 +1,63 @@
+Level: HARD
+
+
+SQL Schema
+
+Table: employee 
++------------------+-----------+
+| Column Name      | Type      |
++------------------+-----------+    
+|emp_id            |int        |  
+|first_name        |var        |  
+|last_name         |var        |
+|manager_id        |int        |
+|salary            |int        |
+|dept              |var        |
+|start_date        |date       |
+|building_id       |int        |
++------------------+-----------+
+
+
+Question: Write a query to find the list of employees who earn the second-highest in each department. Return the empid, first and last name, and dept. Order by empid ASC.
+
+Example
+
+Table: employee
++------+----------+---------+----------+------+----+----------+-----------+
+|emp_id|first_name|last_name|manager_id|salary|dept|start_date|building_id|
++------+----------+---------+----------+------+----+----------+-----------+
+|1     |hector    |bush     |1         |40000 |ops |2018-03-05|1          |
+|2     |kim       |stewart  |1         |31000 |eng |2019-04-05|2          |
+|3     |peter     |thompson |1         |31700 |ds  |2019-02-05|3          |
+|4     |thomas    |henderson|1         |32000 |ops |2018-03-05|2          |
+|5     |john      |free     |1         |35000 |eng |2019-03-08|3          |
+|6     |tara      |glad     |5         |32000 |ds  |2019-01-12|1          |
+|7     |linda     |bruss    |5         |30000 |ops |2020-04-19|3          |
+|8     |forest    |gump     |6         |29000 |eng |2021-04-19|1          |
+|9     |luke      |smith    |7         |28000 |ds  |2019-06-24|2          |
++------+----------+---------+----------+------+----+----------+-----------+
+Output
+
++-----------+----------+---------+----------+
+|emp_id     |first_name|last_name|dept      |
++-----------+----------+---------+----------+
+|2          |kim       |stewart  |eng       |
+|3          |peter     |thompson |ds        |
+|4          |thomas    |henderson|ops       |
++-----------+----------+---------+----------+
+
+
+Solution: 
+
+SELECT emp_id, first_name, last_name, dept      
+FROM (SELECT emp_id, 
+      		 first_name, 
+      		 last_name, 
+      		 dept,
+      		 RANK() OVER (PARTITION BY dept ORDER BY salary DESC) AS rank
+      FROM employee
+     ) a
+WHERE a.rank = 2
+ORDER BY a.emp_id ASC
+
+
