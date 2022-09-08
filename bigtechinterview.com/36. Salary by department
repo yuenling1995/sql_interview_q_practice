@@ -1,0 +1,59 @@
+Level: Easy
+
+
+SQL Schema
+
+Table: employee 
++------------------+-----------+
+| Column Name      | Type      |
++------------------+-----------+    
+|emp_id            |int        |  
+|first_name        |var        |  
+|last_name         |var        |
+|manager_id        |int        |
+|salary            |int        |
+|dept              |var        |
+|start_date        |date       |
+|building_id       |int        |
++------------------+-----------+
+
+Question: Write a query to find the average salary by department. Round the result to 2 decimal places.
+
+Example
+
+Table: employee
++------+----------+---------+----------+------+----+----------+-----------+
+|emp_id|first_name|last_name|manager_id|salary|dept|start_date|building_id|
++------+----------+---------+----------+------+----+----------+-----------+
+|1     |hector    |bush     |1         |40000 |ops |2018-03-05|1          |
+|2     |kim       |stewart  |1         |31000 |eng |2019-04-05|2          |
+|3     |peter     |thompson |1         |31700 |ds  |2019-02-05|3          |
+|4     |thomas    |henderson|1         |32000 |ops |2018-03-05|2          |
+|5     |john      |free     |1         |35000 |eng |2019-03-08|3          |
+|6     |tara      |glad     |5         |32000 |ds  |2019-01-12|1          |
+|7     |linda     |bruss    |5         |30000 |ops |2020-04-19|3          |
+|8     |forest    |gump     |6         |29000 |eng |2021-04-19|1          |
+|9     |luke      |smith    |7         |28000 |ds  |2019-06-24|2          |
++------+----------+---------+----------+------+----+----------+-----------+
+
+Output
+
++----------+------------------+
+|dept      |avg_salary        |
++----------+------------------+
+|eng       |31666.67          |
+|ds        |30566.67          |
+|ops       |34000.00          |
++----------+------------------+
+
+Solution
+
+SELECT dept,
+	   ROUND(AVG(salary),2) AS avg_salary
+FROM employee
+GROUP BY dept
+
+
+
+
+
