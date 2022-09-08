@@ -18,7 +18,8 @@ Table: employee
 +------------------+-----------+
 
 
-Question: Write a query to find the list of employees who earn the second-highest in each department. Return the empid, first and last name, and dept. Order by empid ASC.
+Question: Write a query to find the list of employees who earn the second-highest in each department. Return the empid, first and last name, and dept. 
+Order by empid ASC.
 
 Example
 
