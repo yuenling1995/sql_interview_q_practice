@@ -1,0 +1,71 @@
+Level: HARD
+
+
+SQL Schema
+
+Table: questions 
++-------------+-----------+
+| Column Name | Type      |
++-------------+-----------+    
+|question_id  |int        |  
+|level        |var        |  
+|name         |var        |
+|added_date   |timestamp  |
++-------------+-----------+
+Table: members 
++-------------+-----------+
+| Column Name | Type      |
++-------------+-----------+    
+|user_id      |int        |  
+|question_id  |int        |  
+|start_time   |timestamp  |
+|minutes      |int        |
++-------------+-----------+
+
+
+Question: Write a query to find the number of times each question was solved and the total minutes needed in the month of December 2018. Order by question_id ASC.
+
+Example
+
+Table: questions
++-------------+-------+--------+--------------------+
+| question_id | level |  name  | added_date         |
++-------------+-------+--------+--------------------+
+|453          |easy   |superbad|2021-04-05 10:00:00 |
+|558          |medium |matrix  |2021-05-09 12:00:00 |
+|841          |hard   |lucky   |2019-06-03 16:00:00 |
++-------------+-------+--------+--------------------+
+Table: members
++---------+-------------+---------------------+---------+
+| user_id | question_id |      start_time     | minutes |
++---------+-------------+---------------------+---------+
+|1        |453          |2021-04-06 11:00:00  |45       |
+|2        |558          |2021-05-10 10:00:00  |80       |
+|3        |841          |2019-06-04 03:00:00  |35       |
+|4        |453          |2021-04-06 15:00:00  |53       |
+|5        |841          |2019-06-04 12:00:00  |90       |
+|6        |841          |2018-12-04 12:00:00  |3        |
+|5        |841          |2018-12-07 12:00:00  |90       |
+|3        |558          |2018-12-11 12:00:00  |45       |
++---------+-------------+---------------------+---------+
+Output
+
++-----------+-----+-------------+
+|question_id|count|total_minutes|
++-----------+-----+-------------+
+|558        |1    |45           |
+|841        |2    |93           |
++-----------+-----+-------------+
+
+
+Solution:
+
+
+SELECT m.question_id, COUNT(1) AS count, SUM(minutes) AS total_minutes
+FROM members m
+LEFT JOIN questions q
+ON m.question_id = q.question_id
+WHERE DATE(start_time) BETWEEN '2018-12-01' AND '2018-12-31'
+GROUP BY m.question_id
+ORDER BY m.question_id ASC
+
