@@ -1,0 +1,81 @@
+Level: Medium
+
+
+SQL Schema
+
+Table: factory_inventory
++--------------+-----------+
+| Column Name  | Type      |
++--------------+-----------+    
+|factory       |var        |  
+|product       |var        |
+|units         |int        |
++--------------+-----------+
+Table: product_dimension_inches
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+|product       |var      |      
+|W             |int      |  
+|L             |int      |  
+|H             |int      |   
++--------------+---------+
+
+
+Question: Write a query to find how much cubic feet of volume does the inventory occupy in each factory.
+
+Note: Total Cubic Feet = length × width × height.
+
+
+Example
+
+Table: factory_inventory
++---------+---------+-------+
+| factory | product | units |
++---------+---------+-------+
+|ABC1     |XYZ      |3      |
+|ABC2     |PQR      |1      |
+|ABC3     |GHI      |2      |
+|ABC3     |JKL      |5      |
+|ABC2     |MNO      |2      |
+|ABC2     |STU      |3      |
+|ABC2     |AAA      |4      |
+|ABC2     |VWX      |1      |
+|ABC1     |VWX      |1      |
+|ABC1     |ZYX      |17     |
+|ABC1     |YYY      |13     |
++---------+---------+-------+
+Table: product_dimension_inches
++-----+-----+-----+---------+
+|  W  |  L  |  H  | product |
++-----+-----+-----+---------+
+|12   |10   |8    |XYZ      |
+|4    |3    |3    |PQR      |
+|14   |11   |2    |GHI      |
+|8    |10   |12   |JKL      |
+|8    |10   |10   |MNO      |
+|8    |10   |10   |STU      |
+|8    |10   |10   |VWX      |
+|8    |10   |NULL |YYY      |
++-----+-----+-----+---------+
+Output
+
++-------+----------------+
+|factory|total_cubic_feet|
++-------+----------------+
+|ABC2   |4836            |
+|ABC3   |5416            |
+|ABC1   |3680            |
++-------+----------------+
+
+
+
+Solution:
+
+SELECT inventory.factory, SUM(dimensions.W*dimensions.L*dimensions.H) AS total_cubic_feet
+FROM factory_inventory inventory
+LEFT JOIN product_dimensions_inches dimensions
+ON inventory.product = product_dimension_inches.product
+GROUP BY inventory.factory
+
+
