@@ -1,0 +1,88 @@
+Level: Hard
+
+SQL Schema
+
+Table: factory_inventory
++--------------+-----------+
+| Column Name  | Type      |
++--------------+-----------+    
+|factory       |var        |  
+|product       |var        |
+|units         |int        |
++--------------+-----------+
+Table: product_dimension_inches
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+|product       |var      |      
+|W             |int      |  
+|L             |int      |  
+|H             |int      |   
++--------------+---------+
+
+
+Question: Your manager needs to place an order to backfill missing parts and ask you to write a query to find how many units of inventory in the company 
+are either missing or have incomplete dimensions.
+
+
+Example
+
+Table: factory_inventory
++---------+---------+-------+
+| factory | product | units |
++---------+---------+-------+
+|ABC1     |XYZ      |3      |
+|ABC2     |PQR      |1      |
+|ABC3     |GHI      |2      |
+|ABC3     |JKL      |5      |
+|ABC2     |MNO      |2      |
+|ABC2     |STU      |3      |
+|ABC2     |AAA      |4      |
+|ABC2     |VWX      |1      |
+|ABC1     |VWX      |1      |
+|ABC1     |ZYX      |17     |
+|ABC1     |YYY      |13     |
++---------+---------+-------+
+Table: product_dimension_inches
++-----+-----+-----+---------+
+|  W  |  L  |  H  | product |
++-----+-----+-----+---------+
+|12   |10   |8    |XYZ      |
+|4    |3    |3    |PQR      |
+|14   |11   |2    |GHI      |
+|8    |10   |12   |JKL      |
+|8    |10   |10   |MNO      |
+|8    |10   |10   |STU      |
+|8    |10   |10   |VWX      |
+|8    |10   |NULL |YYY      |
++-----+-----+-----+---------+
+Output
+
++------------------+
+|missing_dimensions|
++------------------+
+|34                |
++------------------+
+
+
+Solution
+1.
+SELECT COUNT(CASE WHEN inventory.units IS NULL THEN 1
+             CASE WHEN dimensions.W IS NULL THEN 1
+             CASE WHEN dimensions.L IS NULL THEN 1
+             CASE WHEN dimensions.H IS NULL THEN 1 
+             ELSE 0 END) AS missing_dimensions
+FROM factory_inventory inventory
+INNER JOIN product_dimensions_inches dimensions
+ON inventory.product = product_dimension_inches.product
+
+
+
+2.
+SELECT SUM(inventory.units) as missing_dimensions
+FROM factory_inventory inventory
+LEFT JOIN product_dimension_inches dimensions on inventory.product = dimensions.product
+WHERE dimensions.W IS NULL OR dimensions.L IS NULL OR dimensions.H IS NULL;
+
+
+
