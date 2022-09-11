@@ -1,0 +1,63 @@
+Level: HARD
+
+SQL Schema
+
+Table: merchants  
++------------------+-----------+
+| Column Name      | Type      |
++------------------+-----------+    
+|id                |int        |  
+|category          |var        |  
+|country           |var        |  
++------------------+-----------+
+Table: orders
++------------------+-----------+
+| Column Name      | Type      |
++------------------+-----------+    
+|merchant_id       |int        |  
+|order_id          |int        | 
+|order_code        |dec        | 
+|order_revenue     |dec        | 
+|order_date        |date       | 
++------------------+-----------+
+
+
+Question: Write a query to find the top-performing merchants by order revenue for each day of the week. Order results by date desc order.
+
+Example
+
+Table: merchants
++--+--------+-----------+
+|id|category|country    |
++--+--------+-----------+
+|1 |boats   |Switzerland|
+|2 |shoes   |America    |
+|3 |phones  |Germany    |
++--+--------+-----------+
+Table: orders
++-----------+--------+-------------+----------+
+|merchant_id|order_id|order_revenue|order_date|
++-----------+--------+-------------+----------+
+|1          |5       |25           |07/30/2000|
+|1          |1       |100          |07/30/2000|
+|2          |2       |50           |07/30/2000|
+|3          |3       |50           |07/30/2000|
+|1          |4       |50           |08/01/2000|
++-----------+--------+-------------+----------+
+
+
+Solution:
+
+SELECT sub.merchant_id,
+	   sub."Day"
+FROM
+(SELECT merchant_id,
+ 	   order_date,
+       TO_CHAR(order_date, 'Day') AS "Day",
+       RANK() OVER (PARTITION BY order_date
+                    ORDER BY order_revenue DESC) AS rank
+FROM orders) sub
+WHERE sub.rank = 1
+ORDER BY sub.order_date DESC
+
+
