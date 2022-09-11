@@ -1,0 +1,59 @@
+Level: Easy
+
+
+SQL Schema
+
+Table: all_numbers
++------------------+-----------+
+| Column Name      | Type      |
++------------------+-----------+    
+|phone_number      |var        |  
++------------------+-----------+
+Table: confirmed_numbers
++------------------+-----------+
+| Column Name      | Type      |
++------------------+-----------+    
+|phone_number      |var        |  
++------------------+-----------+
+
+
+Question: Write a query to calculate the confirmation percentage for phone numbers.
+
+Example
+
+Table: all_numbers
++-------------+
+|phone_numbers|
++-------------+
+|706-766-8523 |
+|555-239-6874 |
+|407-234-5041 |
+|(123)351-6123|
+|251-874-3478 |
++-------------+
+Table: confirmed_numbers
++-----+-------+
+|phone_numbers|
++-----+-------+
+|555-239-6874 |
+|407-234-5041 |
+|(123)351-6123|
++-----+-------+
+Output
+
++-------------------------------+
+|percentage_of_numbers_confirmed|
++-------------------------------+
+|60.00%                         |
++-------------------------------+
+
+
+
+Solution:
+
+
+SELECT CONCAT(ROUND(100*COUNT(c.phone_number)/COUNT(a.phone_number),2), '%') AS percentage_of_numbers_confirmed
+FROM all_numbers a
+LEFT JOIN confirmed_numbers c
+ON a.phone_number=c.phone_number
+
