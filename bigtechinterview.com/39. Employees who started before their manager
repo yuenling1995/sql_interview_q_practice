@@ -1,0 +1,78 @@
+Level: HArd
+
+
+SQL Schema
+
+Table: employee 
++------------------+-----------+
+| Column Name      | Type      |
++------------------+-----------+    
+|emp_id            |int        |  
+|first_name        |var        |  
+|last_name         |var        |
+|manager_id        |int        |
+|salary            |int        |
+|dept              |var        |
+|start_date        |date       |
+|building_id       |int        |
++------------------+-----------+
+Table: building  
++------------------+-----------+
+| Column Name      | Type      |
++------------------+-----------+    
+|building_id       |int        |  
+|building_name     |var        |  
++------------------+-----------+
+
+
+Question: The HR team asks you to write a query to find all the employees who started before their manager. Please order by employee start_date in ASC order.
+
+Example
+
+Table: employee
++------+----------+---------+----------+------+----+----------+-----------+
+|emp_id|first_name|last_name|manager_id|salary|dept|start_date|building_id|
++------+----------+---------+----------+------+----+----------+-----------+
+|1     |hector    |bush     |1         |40000 |ops |2018-03-05|1          |
+|2     |kim       |stewart  |1         |31000 |eng |2019-04-05|2          |
+|3     |peter     |thompson |1         |31700 |ds  |2019-02-05|3          |
+|4     |thomas    |henderson|1         |32000 |ops |2018-03-05|2          |
+|5     |john      |free     |1         |35000 |eng |2019-03-08|3          |
+|6     |tara      |glad     |5         |32000 |ds  |2019-01-12|1          |
+|7     |linda     |bruss    |5         |30000 |ops |2020-04-19|3          |
+|8     |forest    |gump     |6         |29000 |eng |2021-04-19|1          |
+|9     |luke      |smith    |7         |28000 |ds  |2019-06-24|2          |
++------+----------+---------+----------+------+----+----------+-----------+
+Table: building
++-----------+--------------+
+|building_id|building_name |
++-----------+--------------+
+|1          |ss            |
+|2          |vs            |
+|3          |ts            |
+|4          |zs            |
++-----------+--------------+
+Output
+
++------+----------+---------+---------------+----------+------------------+
+|emp_id|first_name|last_name|start_date     |manager_id|manager_start_date|
++------+----------+---------+---------------+----------+------------------+
+|6     |tara      |glad     |2019-01-12     |5         |2019-03-08        |
+|9     |luke      |smith    |2019-06-24     |7         |2020-04-19        |
++------+----------+---------+---------------+----------+------------------+
+
+
+SOlution:
+
+
+SELECT e.emp_id,
+	   e.first_name,
+       e.last_name,
+       e.start_date,
+       e.manager_id,
+       m.start_date manager_start_date
+FROM employee e
+LEFT JOIN employee m
+ON m.emp_id = e.manager_id
+WHERE e.start_date < m.start_date
+
