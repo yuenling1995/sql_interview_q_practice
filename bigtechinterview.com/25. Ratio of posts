@@ -1,0 +1,45 @@
+Level: Medium
+
+SQL Schema
+
+Table: events
++------------------+-----------+
+| Column Name      | Type      |
++------------------+-----------+    
+|user_id           |int        |  
+|date              |var        |
+|post_id           |int        | 
+|type              |var        |
+|application       |var        | 
++------------------+-----------+
+
+
+Question: Your manager is again concerned about the recent user engagement and asks you to write a query to showcase what the current post rate is for yesterday. 
+Please round the results to 2 decimal places and order by application ASC.
+
+Example
+
+table: events
++-------+--------------------------+--------+-----+-----------+
+|user_id|date                      |post_id |type |application|
++-------+--------------------------+--------+-----+-----------+
+|1      |current_timestamp::DATE-5 |101     |post |twitter    |
+|2      |current_timestamp::DATE-1 |102     |edit |facebook   |
+|3      |current_timestamp::DATE-4 |105     |post |twitter    |
+|4      |current_timestamp::DATE-1 |109     |like |facebook   |
+|5      |current_timestamp::DATE-1 |102     |post |facebook   |
+|6      |current_timestamp::DATE-3 |107     |post |snapchat   |
+|7      |current_timestamp::DATE-4 |110     |edit |facebook   |
+|8      |current_timestamp::DATE-5 |111     |post |facebook   |
+|9      |current_timestamp::DATE-1 |112     |like |instagram  |
+|10     |current_timestamp::DATE-1 |115     |post |instagram  |
+|11     |current_timestamp::DATE-1 |117     |post |facebook   |
+|12     |current_timestamp::DATE-5 |118     |post |facebook   |
+|13     |current_timestamp::DATE-1 |119     |like |instagram  |
+|14     |current_timestamp::DATE-1 |120     |post |instagram  |
+|15     |current_timestamp::DATE-1 |121     |post |facebook   |
++-------+--------------------------+--------+-----+-----------+
+
+
+Solution:
+
