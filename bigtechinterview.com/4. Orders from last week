@@ -1,0 +1,63 @@
+Level: Medium
+
+
+SQL Schema
+
+Table: orders
++-----------------+---------+
+| Column Name     | Type    |
++-----------------+---------+
+|product_id       |int      |  
+|order_date       |date     |  
+|customer_id      |int      |
+|units_sold       |int      |
++-----------------+---------+
+Table: product
++-----------------+---------+
+| Column Name     | Type    |
++-----------------+---------+
+|product_id       |int      |  
+|product_name     |var      |  
+|product_category |var      |  
++-----------------+---------+
+
+
+Question: Write a query to return the product names that were ordered during the last 1 week. Order by product name ASC.
+
+Example
+
+Table: orders
++----------+-------------------------+-----------+----------+
+|product_id|order_date               |customer_id|units_sold|
++----------+-------------------------+-----------+----------+
+|10        |current_timestamp::DATE-8|463422     |100       |
+|20        |current_timestamp::DATE-4|356784     |200       |
+|30        |current_timestamp::DATE-1|456789     |90        |
++----------+-------------------------+-----------+----------+
+Table: product
++----------+------------+----------------+
+|product_id|product_name|product_category|
++----------+------------+----------------+
+|10        |alpha       |plastics        |
+|20        |omega       |electronic      |
+|30        |delta       |metal           |
++----------+------------+----------------+
+Output
+
++--------------+
+|product_name  |
++--------------+
+|delta         |
+|omega         |
++--------------+
+
+
+Solution:
+
+SELECT p.product_name
+FROM orders o
+LEFT JOIN product p
+ON o.product_id = p.product_id
+WHERE o.order_date + INTERVAL '1 week' >= current_timestamp::DATE 
+ORDER BY p.product_name ASC
+
