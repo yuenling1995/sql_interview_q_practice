@@ -43,3 +43,9 @@ table: events
 
 Solution:
 
+SELECT application,
+       SUM(CASE WHEN type = 'post' THEN 1 ELSE 0 END)/COUNT(post_id)::float AS rate
+FROM events
+WHERE date = current_timestamp::DATE - INTERVAL '1 day'
+GROUP BY application
+
