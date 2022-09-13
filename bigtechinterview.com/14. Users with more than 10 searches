@@ -1,0 +1,60 @@
+Level: Medium
+
+
+SQL Schema
+
+Table: searches
++------------------+-------------+
+| Column Name      | Type        |
++------------------+-------------+
+|search_date       |date         |      
+|search_id         |int          |  
+|user_id           |int          |  
+|age_group         |var          |  
+|search_query      |var          | 
++------------------+-------------+
+
+
+Question: Write a query to show how many users made more than 5 searches in the last 7 days from June 4th, 2022.
+
+Example
+
+Table: searches
++-----------+---------+-------+---------+-------------+
+|search_date|search_id|user_id|age_group|search_query |
++-----------+---------+-------+---------+-------------+
+|2022-05-30 |101      |9991   |<30      |justin bieber|
+|2022-05-30 |102      |9991   |<30      |beyonce      |
+|2022-05-31 |103      |5555   |<30      |kayne west   |
+|2022-05-31 |104      |9991   |<30      |dr dre       |
+|2022-05-31 |105      |5555   |<30      |eminem       |
+|2022-06-01 |106      |5555   |<30      |funny fails  |
+|2022-06-01 |107      |9991   |<30      |sql tutorials|
+|2022-06-02 |111      |9991   |<30      |slow jazz    |
+|2022-06-03 |112      |1234   |<30      |amazon sql   |
+|2022-06-03 |113      |5555   |<30      |study beats  |
+|2022-06-03 |114      |5555   |<30      |self joins   |
+|2022-06-03 |115      |9991   |<30      |python help  |
+|2022-06-03 |116      |5555   |30-50    |panda guides |
+|2022-06-04 |117      |1234   |50+      |lofi remix   |
++-----------+---------+-------+---------+-------------+
+Output
+
++---------+--------------+
+| user_id | num_searches |
++---------+--------------+
+|5555     |6             |
+|9991     |6             | 
++---------+--------------+
+
+
+Solution:
+
+
+SELECT user_id,
+	   COUNT(*) AS num_searches
+FROM searches
+WHERE search_date + INTERVAL '7 days' >= '2022-06-04'::date
+GROUP BY user_id
+HAVING COUNT(*)>5
+ORDER BY user_id
