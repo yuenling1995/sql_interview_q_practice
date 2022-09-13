@@ -1,0 +1,63 @@
+Level: Medium
+
+
+SQL Schema
+
+Table: post_relationship
++------------------+-----------+
+| Column Name      | Type      |
++------------------+-----------+
+|date              |date       |      
+|post_id           |int        | 
+|relationship      |var        |
+|interaction       |var        |
++------------------+-----------+
+Table: posts
++------------------+-----------+
+| Column Name      | Type      |
++------------------+-----------+    
+|post_id           |int        |  
+|poster_id         |int        |  
++------------------+-----------+
+
+
+Question: Write a query on the average number of likes on posts for when poster_id = 101. Round the result two decimals places.
+
+Example
+
+Table: post_relationship
++-------------------------+---------+-------------+------------+
+|date                     |post_id  |relationship |interaction |
++-------------------------+---------+-------------+------------+
+|current_timestamp::DATE-3|1        |Friend       |share       |
+|current_timestamp::DATE-2|1        |Group        |like        |
+|current_timestamp::DATE-1|2        |Group        |post        |
+|current_timestamp::DATE-1|2        |Page         |like        |
+|current_timestamp::DATE-5|2        |Page         |like        |
+|current_timestamp::DATE-1|3        |Group        |like        |
+|current_timestamp::DATE-1|3        |Friend       |like        | 
+|current_timestamp::DATE-1|4        |Page         |like        |
++-------------------------+---------+-------------+------------+
+Table: posts
++-------+---------+
+|post_id|poster_id|
++-------+---------+
+|1      |101      |
+|2      |101      |
+|3      |102      |
+|4      |103      |
++-------+---------+
+
+
+Solution:
+
+SELECT ROUND(AVG(sub.num_likes),2) AS round
+FROM
+(SELECT r.post_id,
+         COUNT(*) AS num_likes
+  FROM post_relationship r
+  INNER JOIN posts p
+  ON r.post_id = p.post_id 
+  WHERE r.interaction = 'like'
+  AND p.poster_id = 101
+  GROUP BY r.post_id) sub
