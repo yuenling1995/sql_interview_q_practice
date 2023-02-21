@@ -1,0 +1,12 @@
+Question:
+Count the number of movies that Abigail Breslin was nominated for an oscar.
+
+
+Think:
+Can use count() and where statement to find out the number of times Abigail was nominated for oscar
+
+
+Solution:
+select count(*) as n_movies_by_abi
+from oscar_nominees
+where nominee = 'Abigail Breslin'
