@@ -1,0 +1,44 @@
+Question: 
+Write a query that calculates the difference between the highest salaries found in the marketing and engineering departments. Output just the absolute difference in salaries.
+
+Think:
+There are 2 ways to approach this problem. 
+First we can fetch the maximum salary in each department in 2 separate queries, and then subtract them.
+Second we can use "case" statement to get the maximum salary for each department and then find its difference in one query only
+
+
+Solution 1:
+
+select 
+    max(case when department = 'marketing' then salary else null end) -
+    max(case when department = 'engineering' then salary else null end) as salary_difference
+from db_employee emp
+join db_dept dep
+on emp.department_id = dep.id
+
+
+
+
+Solution 2:
+
+select(
+(select max(salary) 
+from db_employee emp
+join db_dept dep
+on emp.department_id = dep.id
+where department = 'marketing')
+-
+(select max(salary) 
+from db_employee emp
+join db_dept dep
+on emp.department_id = dep.id
+where department = 'engineering')) as salary_difference
+
+
+
+
+
+
+
+
+t
