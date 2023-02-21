@@ -1,0 +1,11 @@
+Question:
+Find the last time each bike was in use. Output both the bike number and the date-timestamp of the bike's last use (i.e., the date-time the bike was returned). Order the results by bikes that were most recently used.
+
+Think:
+group by each bike number, find the maximum value in the "end_time" column as the return time
+
+
+Solution:
+select bike_number, max(end_time) as last_used
+from dc_bikeshare_q1_2012
+group by 1
