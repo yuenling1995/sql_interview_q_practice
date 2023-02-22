@@ -1,0 +1,13 @@
+Question:
+Find the base pay for Police Captains.
+Output the employee name along with the corresponding base pay.
+
+
+Think:
+filter the jobtitle in "where" and find the results
+
+
+Solution:
+select employeename, basepay
+from sf_public_salaries
+where jobtitle like '%CAPTAIN%'
