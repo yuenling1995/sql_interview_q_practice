@@ -1,0 +1,16 @@
+Question:
+Find the most profitable company from the financial sector. Output the result along with the continent.
+
+
+
+
+Think:
+use a subquery to find the maximum profit in the financial sector
+
+
+
+Solution:
+select company, continent
+from forbes_global_2010_2014
+where sector = 'Financials'
+and profits = (select max(profits) from forbes_global_2010_2014 where sector = 'Financials')
