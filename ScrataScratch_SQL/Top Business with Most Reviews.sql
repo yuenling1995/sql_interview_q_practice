@@ -1,6 +1,6 @@
 /**
 Link: https://platform.stratascratch.com/coding/10048-top-businesses-with-most-reviews?code_type=1
-Level of Difficulty: Easy
+Level of Difficulty: Medium
 Company: Yelp
 
 Question:
