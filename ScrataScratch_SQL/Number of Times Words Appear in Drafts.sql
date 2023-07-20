@@ -22,7 +22,7 @@ Thought Process:
 Answer:
 
 select 
-    unnest(string_to_array(replace(trim(contents, '.'), ',', ''), ' ')) as word,
+    unnest(string_to_array(replace(trim(both '.' from contents), ',', ''), ' ')) as word,
     count(1) as nentry
 from google_file_store
 where filename like 'draft%'
