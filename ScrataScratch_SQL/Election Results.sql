@@ -50,3 +50,36 @@ where sub2.rank = 1
 
 
 
+-- here's a different, annoying method without using the window function
+
+-- first count the vote value by each voter
+-- second display all columns in the table
+-- third rank each candidate by sum of votes 
+-- lastly select the candidate name only 
+with a as (select voting_results.*,
+       sub.vote_value as vote
+from voting_results
+join 
+(select voter,
+       1.0/count(candidate) as vote_value
+from voting_results
+where candidate is not null 
+group by 1) sub
+on voting_results.voter = sub.voter
+where candidate is not null 
+order by voter),
+
+ b as (
+select candidate,
+       sum(vote),
+       dense_rank() over (order by sum(vote) desc) as rank 
+from a 
+group by 1
+limit 1)
+
+select candidate
+from b 
+
+
+
+
